@@ -1,5 +1,0 @@
-C:\Users\achre\Documents\BioloMICS-services\BioloMICS.ClientApi.Tests\bin\Debug\netcoreapp3.1\BioloMICS.ClientApi.Tests.deps.json
-C:\Users\achre\Documents\BioloMICS-services\BioloMICS.ClientApi.Tests\bin\Debug\netcoreapp3.1\BioloMICS.ClientApi.Tests.dll
-C:\Users\achre\Documents\BioloMICS-services\BioloMICS.ClientApi.Tests\obj\Debug\netcoreapp3.1\BioloMICS.ClientApi.Tests.AssemblyInfoInputs.cache
-C:\Users\achre\Documents\BioloMICS-services\BioloMICS.ClientApi.Tests\obj\Debug\netcoreapp3.1\BioloMICS.ClientApi.Tests.AssemblyInfo.cs
-C:\Users\achre\Documents\BioloMICS-services\BioloMICS.ClientApi.Tests\obj\Debug\netcoreapp3.1\BioloMICS.ClientApi.Tests.csprojAssemblyReference.cache
