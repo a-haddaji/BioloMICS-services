@@ -3,12 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BioloMICS.ClientApi.Model
 {
-	public class SearchInputModel
+
+	public class SearchQuery
 	{
 		/// <summary>
 		/// Represents a complex query containing a list of conditions.
 		/// </summary>
-		public List<ConditionEntity> Query { get; set; }
+		public List<ConditionEntity> Query { get; set; } = new List<ConditionEntity>();
 		/// <summary>
 		/// Expression is the logic combination of query conditions included in the Query property, each condition is referenced with Q{Index}.
 		/// Available logic operations are And, Or, AndNot, OrNot. (Parentheses are optional)
@@ -16,6 +17,10 @@ namespace BioloMICS.ClientApi.Model
 		/// </summary>
 		[RegularExpression(@"^(\s*\(\s*)*\s*(Not(\s+|(\s*\(\s*)+))*Q\d+(\s*\)\s*)*((\s+|(\s*\(\s*)+)(And|Or|AndNot|OrNot)\s+(\s*\(\s*)*Q\d+(\s*\)\s*)*)*\s*$")]
 		public string Expression { get; set; }
+	}
+
+	public class SearchInputModel : SearchQuery
+	{
 		/// <summary>
 		/// The index of the first record in the search result.
 		/// </summary>

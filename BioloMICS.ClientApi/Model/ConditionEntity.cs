@@ -1,5 +1,4 @@
-﻿using IO.Swagger.Model;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 
 namespace BioloMICS.ClientApi.Model
@@ -11,7 +10,7 @@ namespace BioloMICS.ClientApi.Model
 		/// The unique key of the field being used as a criteria in a condition.
 		/// </summary>
 		[Required]
-		public string FieldKey { get; set; }
+		public long FieldKey { get; set; }
 		
 		/// <summary>
 		/// The index of the critera, this is mandatory to be able to refer to conditions in the expression part.

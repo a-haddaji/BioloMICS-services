@@ -17,301 +17,192 @@ namespace BioloMICS.ClientApi.Model
     /// Defines FieldTypeEnum
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-        public enum FieldTypeEnum
-    {
-        /// <summary>
-        /// Enum RecordName for value: RecordName
-        /// </summary>
-        [EnumMember(Value = "RecordName")]
-        RecordName = 1,
-        /// <summary>
-        /// Enum RecordId for value: RecordId
-        /// </summary>
-        [EnumMember(Value = "RecordId")]
-        RecordId = 2,
-        /// <summary>
-        /// Enum AnyTextField for value: AnyTextField
-        /// </summary>
-        [EnumMember(Value = "AnyTextField")]
-        AnyTextField = 3,
-        /// <summary>
-        /// Enum CreationDate for value: CreationDate
-        /// </summary>
-        [EnumMember(Value = "CreationDate")]
-        CreationDate = 4,
-        /// <summary>
-        /// Enum LastChangeDate for value: LastChangeDate
-        /// </summary>
-        [EnumMember(Value = "LastChangeDate")]
-        LastChangeDate = 5,
-        /// <summary>
-        /// Enum Owner for value: Owner
-        /// </summary>
-        [EnumMember(Value = "Owner")]
-        Owner = 6,
-        /// <summary>
-        /// Enum LastChangeUser for value: LastChangeUser
-        /// </summary>
-        [EnumMember(Value = "LastChangeUser")]
-        LastChangeUser = 7,
-        /// <summary>
-        /// Enum Branch for value: Branch
-        /// </summary>
-        [EnumMember(Value = "Branch")]
-        Branch = 8,
-        /// <summary>
-        /// Enum TabContainer for value: TabContainer
-        /// </summary>
-        [EnumMember(Value = "TabContainer")]
-        TabContainer = 9,
-        /// <summary>
-        /// Enum TableContainer for value: TableContainer
-        /// </summary>
-        [EnumMember(Value = "TableContainer")]
-        TableContainer = 10,
-        /// <summary>
-        /// Enum TileContainer for value: TileContainer
-        /// </summary>
-        [EnumMember(Value = "TileContainer")]
-        TileContainer = 11,
-        /// <summary>
-        /// Enum LayoutContainer for value: LayoutContainer
-        /// </summary>
-        [EnumMember(Value = "LayoutContainer")]
-        LayoutContainer = 12,
-        /// <summary>
-        /// Enum ColumnContainer for value: ColumnContainer
-        /// </summary>
-        [EnumMember(Value = "ColumnContainer")]
-        ColumnContainer = 13,
-        /// <summary>
-        /// Enum StepperContainer for value: StepperContainer
-        /// </summary>
-        [EnumMember(Value = "StepperContainer")]
-        StepperContainer = 14,
-        /// <summary>
-        /// Enum ExpansionPanelContainer for value: ExpansionPanelContainer
-        /// </summary>
-        [EnumMember(Value = "ExpansionPanelContainer")]
-        ExpansionPanelContainer = 15,
-        /// <summary>
-        /// Enum CarouselContainer for value: CarouselContainer
-        /// </summary>
-        [EnumMember(Value = "CarouselContainer")]
-        CarouselContainer = 16,
-        /// <summary>
-        /// Enum Unknown for value: Unknown
-        /// </summary>
-        [EnumMember(Value = "Unknown")]
-        Unknown = 17,
-        /// <summary>
-        /// Enum A for value: A
-        /// </summary>
-        [EnumMember(Value = "A")]
-        A = 18,
-        /// <summary>
-        /// Enum C for value: C
-        /// </summary>
-        [EnumMember(Value = "C")]
-        C = 19,
-        /// <summary>
-        /// Enum D for value: D
-        /// </summary>
-        [EnumMember(Value = "D")]
-        D = 20,
-        /// <summary>
-        /// Enum E for value: E
-        /// </summary>
-        [EnumMember(Value = "E")]
-        E = 21,
-        /// <summary>
-        /// Enum F for value: F
-        /// </summary>
-        [EnumMember(Value = "F")]
-        F = 22,
-        /// <summary>
-        /// Enum G for value: G
-        /// </summary>
-        [EnumMember(Value = "G")]
-        G = 23,
-        /// <summary>
-        /// Enum H for value: H
-        /// </summary>
-        [EnumMember(Value = "H")]
-        H = 24,
-        /// <summary>
-        /// Enum I for value: I
-        /// </summary>
-        [EnumMember(Value = "I")]
-        I = 25,
-        /// <summary>
-        /// Enum K for value: K
-        /// </summary>
-        [EnumMember(Value = "K")]
-        K = 26,
-        /// <summary>
-        /// Enum L for value: L
-        /// </summary>
-        [EnumMember(Value = "L")]
-        L = 27,
-        /// <summary>
-        /// Enum M for value: M
-        /// </summary>
-        [EnumMember(Value = "M")]
-        M = 28,
-        /// <summary>
-        /// Enum N for value: N
-        /// </summary>
-        [EnumMember(Value = "N")]
-        N = 29,
-        /// <summary>
-        /// Enum O for value: O
-        /// </summary>
-        [EnumMember(Value = "O")]
-        O = 30,
-        /// <summary>
-        /// Enum P for value: P
-        /// </summary>
-        [EnumMember(Value = "P")]
-        P = 31,
-        /// <summary>
-        /// Enum S for value: S
-        /// </summary>
-        [EnumMember(Value = "S")]
-        S = 32,
-        /// <summary>
-        /// Enum T for value: T
-        /// </summary>
-        [EnumMember(Value = "T")]
-        T = 33,
-        /// <summary>
-        /// Enum U for value: U
-        /// </summary>
-        [EnumMember(Value = "U")]
-        U = 34,
-        /// <summary>
-        /// Enum V for value: V
-        /// </summary>
-        [EnumMember(Value = "V")]
-        V = 35,
-        /// <summary>
-        /// Enum W for value: W
-        /// </summary>
-        [EnumMember(Value = "W")]
-        W = 36,
-        /// <summary>
-        /// Enum Y for value: Y
-        /// </summary>
-        [EnumMember(Value = "Y")]
-        Y = 37,
-        /// <summary>
-        /// Enum Syn for value: Syn
-        /// </summary>
-        [EnumMember(Value = "Syn")]
-        Syn = 38,
-        /// <summary>
-        /// Enum ALink for value: ALink
-        /// </summary>
-        [EnumMember(Value = "ALink")]
-        ALink = 39,
-        /// <summary>
-        /// Enum CLink for value: CLink
-        /// </summary>
-        [EnumMember(Value = "CLink")]
-        CLink = 40,
-        /// <summary>
-        /// Enum DLink for value: DLink
-        /// </summary>
-        [EnumMember(Value = "DLink")]
-        DLink = 41,
-        /// <summary>
-        /// Enum ELink for value: ELink
-        /// </summary>
-        [EnumMember(Value = "ELink")]
-        ELink = 42,
-        /// <summary>
-        /// Enum HLink for value: HLink
-        /// </summary>
-        [EnumMember(Value = "HLink")]
-        HLink = 43,
-        /// <summary>
-        /// Enum ILink for value: ILink
-        /// </summary>
-        [EnumMember(Value = "ILink")]
-        ILink = 44,
-        /// <summary>
-        /// Enum KLink for value: KLink
-        /// </summary>
-        [EnumMember(Value = "KLink")]
-        KLink = 45,
-        /// <summary>
-        /// Enum MLink for value: MLink
-        /// </summary>
-        [EnumMember(Value = "MLink")]
-        MLink = 46,
-        /// <summary>
-        /// Enum SLink for value: SLink
-        /// </summary>
-        [EnumMember(Value = "SLink")]
-        SLink = 47,
-        /// <summary>
-        /// Enum TLink for value: TLink
-        /// </summary>
-        [EnumMember(Value = "TLink")]
-        TLink = 48,
-        /// <summary>
-        /// Enum VLink for value: VLink
-        /// </summary>
-        [EnumMember(Value = "VLink")]
-        VLink = 49,
-        /// <summary>
-        /// Enum FLink for value: FLink
-        /// </summary>
-        [EnumMember(Value = "FLink")]
-        FLink = 50,
-        /// <summary>
-        /// Enum GLink for value: GLink
-        /// </summary>
-        [EnumMember(Value = "GLink")]
-        GLink = 51,
-        /// <summary>
-        /// Enum OLink for value: OLink
-        /// </summary>
-        [EnumMember(Value = "OLink")]
-        OLink = 52,
-        /// <summary>
-        /// Enum SynLink for value: SynLink
-        /// </summary>
-        [EnumMember(Value = "SynLink")]
-        SynLink = 53,
-        /// <summary>
-        /// Enum LLink for value: LLink
-        /// </summary>
-        [EnumMember(Value = "LLink")]
-        LLink = 54,
-        /// <summary>
-        /// Enum NLink for value: NLink
-        /// </summary>
-        [EnumMember(Value = "NLink")]
-        NLink = 55,
-        /// <summary>
-        /// Enum WLink for value: WLink
-        /// </summary>
-        [EnumMember(Value = "WLink")]
-        WLink = 56,
-        /// <summary>
-        /// Enum Dash for value: Dash
-        /// </summary>
-        [EnumMember(Value = "Dash")]
-        Dash = 57,
-        /// <summary>
-        /// Enum RLink for value: RLink
-        /// </summary>
-        [EnumMember(Value = "RLink")]
-        RLink = 58,
-        /// <summary>
-        /// Enum CaptchaField for value: CaptchaField
-        /// </summary>
-        [EnumMember(Value = "CaptchaField")]
-        CaptchaField = 59    }
+	public enum FieldTypeEnum
+	{
+		RecordName = -100,
+		RecordId = -101,
+		AnyTextField = -102,
+		CreationDate = -103,
+		LastChangeDate = -104,
+		Owner = -105,
+		LastChangeUser = -106,
+
+		/// <summary>
+		/// Unknown field Type if it is not from BioloMICS types.
+		/// </summary>
+		Unknown = 0,
+
+		/// <summary>
+		/// Field A : vector of int values: +, -, d, w, ...
+		/// </summary>
+		A = 1, // vector of int values: +, -, d, w, ...
+
+		//B = 2
+		/// <summary>
+		/// The C field: 1 int value: variable - yes - no
+		/// </summary>
+		C = 3, // 1 int value: variable - yes - no
+
+		/// <summary>
+		/// The D Field :1 double value
+		/// </summary>
+		D = 4, // 1 double value
+
+		/// <summary>
+		/// The E Field: string
+		/// </summary>
+		E = 5, // string
+
+		/// <summary>
+		/// The File Field : File. WARNING: in this case a single FieldDef generates TWO columns. See ColumnName() and ColumnNameForFileName()
+		/// </summary>
+		F = 6, // File. WARNING: in this case a single FieldDef generates TWO columns. See ColumnName() and ColumnNameForFileName()
+
+		/// <summary>
+		/// The GField :Gel, vector of double
+		/// </summary>
+		G = 7, // Gel, vector of double
+
+		/// <summary>
+		/// The H Field: H for history: a Date in format YYYYMMDDHHmmss saved in an int64
+		/// </summary>
+		H = 8, // H for history: a Date in format YYYYMMDDHHmmss saved in an int64
+
+		/// <summary>
+		/// The I Field: integer 64 bits
+		/// </summary>
+		I = 9, // integer 64 bits
+
+		//J = 10
+		/// <summary>
+		/// The k Field : Color
+		/// </summary>
+		K = 11, // Color
+
+		/// <summary>
+		/// The L Field: Location: m_Latitude, m_Longitude, m_Precision
+		/// </summary>
+		L = 12, // Location: m_Latitude, m_Longitude, m_Precision
+
+		/// <summary>
+		/// The M Field: 	Vector of TSField
+		/// </summary>
+		M = 13, // Vector of TSField
+
+		/// <summary>
+		/// The N field : Sequence, DNA or Protein
+		/// </summary>
+		N = 14, // Sequence, DNA or Protein
+
+		/// <summary>
+		/// The O Field: Ontology, string like "2.5.3.24.36"
+		/// </summary>
+		O = 15, // Ontology, string like "2.5.3.24.36"
+
+		/// <summary>
+		/// The P Field : temporary object used during upgrade, URL, File, Picture or Gel
+		/// </summary>
+		P = 16, // temporary object used during upgrade, URL, File, Picture or Gel
+
+		//Q = 17
+		//R = 18
+		/// <summary>
+		/// The S Field : 4 double values: m_Min, m_LP, m_HP, m_Max
+		/// </summary>
+		S = 19, // 4 double values: m_Min, m_LP, m_HP, m_Max
+
+		/// <summary>
+		/// The T Field :1 int value: A, B, C, D and all possible combinations
+		/// </summary>
+		T = 20, // 1 int value: A, B, C, D and all possible combinations
+
+		/// <summary>
+		/// The U Field : vector of URL strings
+		/// </summary>
+		U = 21, // vector of URL strings
+
+		/// <summary>
+		/// The V Field: same as TField, but with unlimited number of states
+		/// </summary>
+		V = 22, // same as TField, but with unlimited number of states
+
+		/// <summary>
+		/// The W Field: Wave: Name + vector of points
+		/// </summary>
+		W = 23, // Wave: Name + vector of points
+
+		//X = 24
+		/// <summary>
+		/// The Y Field: a "Yield" field = summary of other records in html
+		/// </summary>
+		Y = 25, // a "Yield" field = summary of other records in html
+
+		//Z = 26
+		/// <summary>
+		/// The Syn Field: synonymy with two values: the current name ID and the obligate synonym ID
+		/// </summary>
+		Syn = 27, // Synonymy with two values: the current name ID and the obligate synonym ID
+
+		//	Field links, keep them >= 70 and < 116. See TFieldDef.IsLinkField()
+
+		//	I leave holes here in case we want to upgrade all scenarios and TFieldDef with new consecutive values in the future
+		ALink = 70,
+		CLink = 72,
+		DLink = 73,
+		ELink = 74,
+		HLink = 77,
+		ILink = 78,
+		KLink = 80,
+		MLink = 82,
+		SLink = 88,
+		TLink = 90,
+		VLink = 92,
+
+		/// <summary>
+		/// The file link Field
+		/// </summary>
+		FLink = 106,
+
+		/// <summary>
+		/// The G link Field
+		/// </summary>
+		GLink = 107,
+
+		/// <summary>
+		/// The O link Field
+		/// </summary>
+		OLink = 108,
+
+		/// <summary>
+		/// The syn link : LinkField to a Synonymy field 
+		/// </summary>
+		SynLink = 109, // LinkField to a Syn field
+
+		/// <summary>
+		/// The L link Field
+		/// </summary>
+		LLink = 112,
+
+		/// <summary>
+		/// The N link Field
+		/// </summary>
+		NLink = 114,
+
+		/// <summary>
+		/// The W link Field
+		/// </summary>
+		WLink = 115,
+
+		//	Record links, keep them >= 116. See TFieldDef.IsRecLink()
+		/// <summary>
+		/// The dash
+		/// </summary>
+		Dash = 116, // Dashboard field, added by OC:2-7-2015, to be set as RLink
+
+		/// <summary>
+		/// The R link field
+		/// </summary>
+		RLink = 118, // RecLinkField, keep them >= 118, or modify function IsRecLinkField()
+		CaptchaField = 207,
+	}
 }

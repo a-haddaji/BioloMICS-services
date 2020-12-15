@@ -5,13 +5,6 @@ namespace BioloMICS.ClientApi.Model
 	/// </summary>
 	public class ValueOfFieldH : ValueOfFieldBase
 	{
-		#region fields
-
-		private string m_Value;
-
-
-		#endregion
-
 		#region Properties
 
 		public string Value { get; set; }
