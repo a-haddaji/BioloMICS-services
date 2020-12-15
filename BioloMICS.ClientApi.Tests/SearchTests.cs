@@ -22,7 +22,7 @@ namespace BioloMICS.ClientApi.Tests
 			//			.Or(x => x.TestProperty, QueryOperationEnum.NbrIsDifferentFrom, 0);
 
 
-			var client = new BiolomicsClient(baseUri: "http://localhost:52145", new ClientCredentials { ClientId = "Miri", ClientSecret = "123456" });
+			var client = new BiolomicsClient(baseUri: "http://localhost:52145", new ClientCredentials { ClientId = "xx", ClientSecret = "xx" });
 			
 			var schemas = client.GetSchemas();
 
