@@ -10,13 +10,15 @@ namespace BioloMICS.ClientApi.Client
 	public class BiolomicsClient
 	{
 		private RestClient _client;
+		private BiolomicsAuthenticator _authenticator;
 
 		public BiolomicsClient(string baseUri, ClientCredentials credentials)
 		{
 			_client = new RestClient(baseUri);
 			_client.ThrowOnDeserializationError = true;
 			_client.ThrowOnAnyError = true;
-			_client.Authenticator = new BiolomicsAuthenticator(credentials);
+			_authenticator = new BiolomicsAuthenticator(credentials);
+			_client.Authenticator = _authenticator;
 			_client.UseSerializer(() => new JsonNetSerializer());
 		}
 
@@ -25,8 +27,29 @@ namespace BioloMICS.ClientApi.Client
 			_client = new RestClient(baseUri);
 			_client.ThrowOnDeserializationError = true;
 			_client.ThrowOnAnyError = true;
-			_client.Authenticator = new BiolomicsAuthenticator(credentials);
+			_authenticator = new BiolomicsAuthenticator(credentials);
+			_client.Authenticator = _authenticator;
 			_client.UseSerializer(() => new JsonNetSerializer());
+		}
+
+		public int ExpiresIn 
+		{ 
+			get { return _authenticator.ExpiresIn; }
+		}
+
+		public bool IsUserAuthenticated
+		{
+			get { return _authenticator.IsUserAuthenticated; }
+		}
+
+		public UserModel CurrentUser
+		{
+			get { return _authenticator.CurrentUser; }
+		}
+
+		public bool ExtendUserSession() 
+		{
+			return _authenticator.Refresh();
 		}
 
 		public IEnumerable<WebSchema> GetSchemas()

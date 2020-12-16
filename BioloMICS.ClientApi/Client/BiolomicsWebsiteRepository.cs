@@ -26,6 +26,13 @@ namespace BioloMICS.ClientApi.Client
 			return response.Data;
 		}
 
+		public TEntity FindByName<TEntity>(string name) where TEntity : EntityBase
+		{
+			var request = new RestRequest($"search/{GetTableViewName<TEntity>()}/findByName?name={name}", Method.GET);
+			var response = _client.Execute<TEntity>(request);
+			return response.Data;
+		}
+
 
 		public Dictionary<string, object> GetRecordById(string tableView, int id)
 		{
