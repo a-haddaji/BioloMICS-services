@@ -57,6 +57,30 @@ namespace BioloMICS.ClientApi.Client
 			return response.Data;
 		}
 
+		public bool Create(string tableView, RecordData data)
+		{
+			var request = new RestRequest($"data/{tableView}", Method.POST);
+			request.AddHeader("content-type", "application/json");
+
+			request.AddJsonBody(data);
+
+			var response = _client.Execute(request);
+
+			return response.IsSuccessful;
+		}
+
+		public bool Update(string tableView, Record data)
+		{
+			var request = new RestRequest($"data/{tableView}", Method.PUT);
+			request.AddHeader("content-type", "application/json");
+
+			request.AddJsonBody(data);
+
+			var response = _client.Execute(request);
+
+			return response.IsSuccessful;
+		}
+
 		private string GetTableViewName<TEntity>()
 		{
 			var entityType = typeof(TEntity);

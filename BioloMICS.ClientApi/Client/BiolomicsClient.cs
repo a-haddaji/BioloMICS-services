@@ -1,5 +1,6 @@
 ﻿using BioloMICS.ClientApi.Client.Authentication;
 using BioloMICS.ClientApi.Model;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using RestSharp.Serializers.NewtonsoftJson;
 using System;
@@ -19,6 +20,10 @@ namespace BioloMICS.ClientApi.Client
 			_client.ThrowOnAnyError = true;
 			_authenticator = new BiolomicsAuthenticator(credentials);
 			_client.Authenticator = _authenticator;
+			JsonNetSerializer.DefaultSettings.ContractResolver = new DefaultContractResolver
+			{
+				NamingStrategy = null
+			};
 			_client.UseSerializer(() => new JsonNetSerializer());
 		}
 
@@ -29,6 +34,10 @@ namespace BioloMICS.ClientApi.Client
 			_client.ThrowOnAnyError = true;
 			_authenticator = new BiolomicsAuthenticator(credentials);
 			_client.Authenticator = _authenticator;
+			JsonNetSerializer.DefaultSettings.ContractResolver = new DefaultContractResolver
+			{
+				NamingStrategy = null
+			};
 			_client.UseSerializer(() => new JsonNetSerializer());
 		}
 
