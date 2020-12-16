@@ -1,13 +1,10 @@
 ﻿using BioloMICS.ClientApi.Client;
 using BioloMICS.ClientApi.Client.Authentication;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BioloMICS.ClientApi.Tests
 {
-	class ClientTests
+	abstract class ClientTests
 	{
 		protected int WebsiteId = 1;
 		protected string TableView = "WS Mirri";
@@ -15,9 +12,9 @@ namespace BioloMICS.ClientApi.Tests
 		protected BiolomicsClient Client;
 
 		[OneTimeSetUp]
-		public void SetupClient()
+		public virtual void SetupClient()
 		{
-			Client = new BiolomicsClient(baseUri: "http://localhost:8080", new ClientCredentials { ClientId = "xx", ClientSecret = "xx" });
+			Client = new BiolomicsClient(baseUri: "https://localhost:8080", new ClientCredentials { ClientId = "xx", ClientSecret = "xx" });
 		}
 	}
 }

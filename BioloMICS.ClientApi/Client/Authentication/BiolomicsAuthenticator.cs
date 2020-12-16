@@ -18,28 +18,16 @@ namespace BioloMICS.ClientApi.Client.Authentication
 		private ClientCredentials _credentials;
 		private DateTime _lastAuthenticateDateTime;
 		private bool _isAuthenticated;
-		private bool _isUserAuthenticated;
-		private int _expiresIn;
 		private string _accessToken;
 		private string _refreshToken;
 		private IRestClient tokenClient;
 		private string tokenUri;
-		private UserModel _currentUser;
 
-		public int ExpiresIn 
-		{
-			get { return _expiresIn; }
-		}
+		public int ExpiresIn { get; private set; }
 
-		public bool IsUserAuthenticated
-		{
-			get { return _isUserAuthenticated; }
-		}
+		public bool IsUserAuthenticated { get; private set; }
 
-		public UserModel CurrentUser
-		{
-			get { return _currentUser; }
-		}
+		public UserModel CurrentUser { get; private set; }
 
 		public BiolomicsAuthenticator(ClientCredentials credentials)
 		{
@@ -50,7 +38,7 @@ namespace BioloMICS.ClientApi.Client.Authentication
 
 		public void Authenticate(IRestClient client, IRestRequest request)
 		{
-			var expired = _expiresIn != 0 ? DateTime.Now >= _lastAuthenticateDateTime.AddSeconds(_expiresIn) : false;
+			var expired = ExpiresIn != 0 ? DateTime.Now >= _lastAuthenticateDateTime.AddSeconds(ExpiresIn) : false;
 
 			if (!_isAuthenticated || expired)
 			{
@@ -72,8 +60,8 @@ namespace BioloMICS.ClientApi.Client.Authentication
 						client_id = _credentials.ClientId,
 						client_secret = _credentials.ClientSecret,
 						grant_type = ClientCredentialsGrantType });
-					_isUserAuthenticated = false;
-					_currentUser = null;
+					IsUserAuthenticated = false;
+					CurrentUser = null;
 				}
 
 				var response = tokenClient.Execute<OAuthReponse>(tokenRequest);
@@ -84,13 +72,13 @@ namespace BioloMICS.ClientApi.Client.Authentication
 					_isAuthenticated = true;	
 					_accessToken = response.Data.BearerToken;
 					_refreshToken = response.Data.RefreshToken;
-					_expiresIn = response.Data.ExpiresIn;		
+					ExpiresIn = response.Data.ExpiresIn;		
 
 					if (_credentials is PasswordCredentials) 
 					{
-						_isUserAuthenticated = true;
+						IsUserAuthenticated = true;
 						var token = new JwtSecurityToken(response.Data.BearerToken);
-						_currentUser = new UserModel
+						CurrentUser = new UserModel
 						{
 							Id = int.Parse(token.Claims.First(x => x.Type == "Id").Value),
 							Name = token.Claims.First(x => x.Type == "Name").Value
@@ -126,7 +114,7 @@ namespace BioloMICS.ClientApi.Client.Authentication
 				_lastAuthenticateDateTime = DateTime.Now;
 				_accessToken = response.Data.BearerToken;
 				_refreshToken = response.Data.RefreshToken;
-				_expiresIn = response.Data.ExpiresIn;
+				ExpiresIn = response.Data.ExpiresIn;
 			}
 
 			return success;

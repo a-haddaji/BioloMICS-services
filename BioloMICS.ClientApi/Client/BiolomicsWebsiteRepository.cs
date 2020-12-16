@@ -1,10 +1,7 @@
 ﻿using BioloMICS.ClientApi.Attributes;
-using BioloMICS.ClientApi.Client.Authentication;
 using BioloMICS.ClientApi.Extentions;
 using BioloMICS.ClientApi.Model;
 using RestSharp;
-using RestSharp.Authenticators;
-using RestSharp.Serializers.NewtonsoftJson;
 using System;
 using System.Collections.Generic;
 
@@ -13,15 +10,17 @@ namespace BioloMICS.ClientApi.Client
 	public class BiolomicsWebsiteRepository
 	{
 		private IRestClient _client;
+		private int _websiteId;
 		public BiolomicsWebsiteRepository(IRestClient client, int websiteId)
 		{
 			_client = client;
-			_client.AddDefaultHeader("WebsiteId", websiteId.ToString());
+			_websiteId = websiteId;
 		}
 
 		public TEntity GetRecordById<TEntity>(int id) where TEntity : EntityBase
 		{
 			var request = new RestRequest($"data/{GetTableViewName<TEntity>()}/{id}", Method.GET);
+			AppendWebsiteIdHeader(request);
 			var response = _client.Execute<TEntity>(request);
 			return response.Data;
 		}
@@ -29,6 +28,7 @@ namespace BioloMICS.ClientApi.Client
 		public TEntity FindByName<TEntity>(string name) where TEntity : EntityBase
 		{
 			var request = new RestRequest($"search/{GetTableViewName<TEntity>()}/findByName?name={name}", Method.GET);
+			AppendWebsiteIdHeader(request);
 			var response = _client.Execute<TEntity>(request);
 			return response.Data;
 		}
@@ -37,6 +37,7 @@ namespace BioloMICS.ClientApi.Client
 		public Dictionary<string, object> GetRecordById(string tableView, int id)
 		{
 			var request = new RestRequest($"data/{tableView}/{id}", Method.GET);
+			AppendWebsiteIdHeader(request);
 			var response = _client.Execute<Dictionary<string, object>>(request);
 			return response.Data;
 		}
@@ -44,6 +45,7 @@ namespace BioloMICS.ClientApi.Client
 		public SearchSummary<TEntity> Search<TEntity>(Queryable<TEntity> queryable, byte displayStart = 0, byte displayLength = 50) where TEntity : EntityBase
 		{
 			var request = new RestRequest($"search/{GetTableViewName<TEntity>()}", Method.POST);
+			AppendWebsiteIdHeader(request);
 			request.AddHeader("content-type", "application/json");
 			
 			var search = queryable.Compile();	
@@ -60,6 +62,7 @@ namespace BioloMICS.ClientApi.Client
 		public bool Create(string tableView, RecordData data)
 		{
 			var request = new RestRequest($"data/{tableView}", Method.POST);
+			AppendWebsiteIdHeader(request);
 			request.AddHeader("content-type", "application/json");
 
 			request.AddJsonBody(data);
@@ -72,6 +75,7 @@ namespace BioloMICS.ClientApi.Client
 		public bool Update(string tableView, Record data)
 		{
 			var request = new RestRequest($"data/{tableView}", Method.PUT);
+			AppendWebsiteIdHeader(request);
 			request.AddHeader("content-type", "application/json");
 
 			request.AddJsonBody(data);
@@ -91,6 +95,11 @@ namespace BioloMICS.ClientApi.Client
 			}
 
 			return tableViewAttribute.TableViewName;
+		}
+
+		private void AppendWebsiteIdHeader(IRestRequest request) 
+		{
+			request.AddHeader("WebsiteId", _websiteId.ToString());
 		}
 	}
 }

@@ -9,7 +9,7 @@ namespace BioloMICS.ClientApi.Tests
 	[TestFixture]
 	class DepositTests : ClientTests
 	{
-		[Test]
+		//[Test]
 		public void CreateAndUpdateTest()
 		{
 			var repository = Client.GetRepository(websiteId: WebsiteId);
