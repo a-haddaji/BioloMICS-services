@@ -19,12 +19,18 @@ namespace BioloMICS.ClientApi.Tests
 		private int _websiteId = 1;
 		private string _tableView = "xx";
 
+		private BiolomicsClient _client;
+
+		[OneTimeSetUp]
+		public void SetupClient()
+		{
+			_client = new BiolomicsClient(baseUri: _baseUri, new ClientCredentials { ClientId = _clientId, ClientSecret = _secret });
+		}
+
 		[Test]
 		public void SchemasTest() 
 		{
-			var client = new BiolomicsClient(baseUri: _baseUri, new ClientCredentials { ClientId = _clientId, ClientSecret = _secret });
-			
-			var schemas = client.GetSchemas();
+			var schemas = _client.GetSchemas();
 
 			Assert.IsTrue(schemas.Any(x=> x.WebsiteId == _websiteId) && schemas.First(x=>x.WebsiteId == _websiteId).TableViews.Any(x=> x.TableViewName == _tableView));
 		}
@@ -32,9 +38,7 @@ namespace BioloMICS.ClientApi.Tests
 		[Test]
 		public void GetRecordByIdTest()
 		{
-			var client = new BiolomicsClient(baseUri: _baseUri, new ClientCredentials { ClientId = _clientId, ClientSecret = _secret });
-
-			var repository = client.GetRepository(websiteId: _websiteId);
+			var repository = _client.GetRepository(websiteId: _websiteId);
 			
 			var result = repository.GetRecordById<StrainsModel>(id: 50000);
 
@@ -51,13 +55,12 @@ namespace BioloMICS.ClientApi.Tests
 			//			.And(x => x.TestProperty, QueryOperationEnum.NbrIsSmallerThan, 0)
 			//			.Or(x => x.TestProperty, QueryOperationEnum.NbrIsDifferentFrom, 0);
 
-			var client = new BiolomicsClient(baseUri: _baseUri, new ClientCredentials { ClientId = _clientId, ClientSecret = _secret });
-
-			var repository = client.GetRepository(websiteId: _websiteId);	
+			var repository = _client.GetRepository(websiteId: _websiteId);	
 
 			var result3 = repository.Search(Queryable<StrainsModel>.Not(x => x.Id, QueryOperationEnum.NbrIsEqualTo, 3));
 
 			Assert.IsTrue(result3.Records.All(x => x.Id != 3));
 		}
+
 	}
 }
