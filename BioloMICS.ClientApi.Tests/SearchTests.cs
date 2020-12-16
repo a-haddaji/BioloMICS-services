@@ -19,7 +19,7 @@ namespace BioloMICS.ClientApi.Tests
 		private int _websiteId = 1;
 		private string _tableView = "xx";
 
-		//[Test]
+		[Test]
 		public void SchemasTest() 
 		{
 			var client = new BiolomicsClient(baseUri: _baseUri, new ClientCredentials { ClientId = _clientId, ClientSecret = _secret });
@@ -29,7 +29,7 @@ namespace BioloMICS.ClientApi.Tests
 			Assert.IsTrue(schemas.Any(x=> x.WebsiteId == _websiteId) && schemas.First(x=>x.WebsiteId == _websiteId).TableViews.Any(x=> x.TableViewName == _tableView));
 		}
 
-		//[Test]
+		[Test]
 		public void GetRecordByIdTest()
 		{
 			var client = new BiolomicsClient(baseUri: _baseUri, new ClientCredentials { ClientId = _clientId, ClientSecret = _secret });
@@ -43,7 +43,7 @@ namespace BioloMICS.ClientApi.Tests
 			Assert.IsTrue(result.Id == 50000);
 		}
 
-		//[Test]
+		[Test]
 		public void SearchTest()
 		{
 			//Example.
@@ -58,50 +58,6 @@ namespace BioloMICS.ClientApi.Tests
 			var result3 = repository.Search(Queryable<StrainsModel>.Not(x => x.Id, QueryOperationEnum.NbrIsEqualTo, 3));
 
 			Assert.IsTrue(result3.Records.All(x => x.Id != 3));
-		}
-
-		[Test]
-		public void CreateAndUpdateTest()
-		{
-			var client = new BiolomicsClient(baseUri: _baseUri, new ClientCredentials { ClientId = _clientId, ClientSecret = _secret });
-
-			var repository = client.GetRepository(websiteId: _websiteId);
-
-			var date = DateTime.Now;
-
-			var recordName = $"New record - {date}";
-
-			var fieldValue = $"Test - {date}";
-
-			var success = repository.Create(tableView: _tableView, new RecordData
-			{
-				RecordName = recordName, Data = new Dictionary<string, ValueOfFieldBase>()
-				{
-					{ "Other culture collection numbers", new ValueOfFieldE { Value = fieldValue} }
-				}
-			});
-
-			Assert.IsTrue(success);
-
-			var result = repository.FindByName<StrainsModel>(recordName);
-
-			Assert.IsTrue(result.Name == recordName && result.OtherCollection == fieldValue);
-
-			var success2 = repository.Update(tableView: _tableView, new Record
-			{
-				RecordName = recordName,
-				RecordId = result.Id,
-				Data = new Dictionary<string, ValueOfFieldBase>()
-				{
-					{ "Other culture collection numbers", new ValueOfFieldE { Value = "Updated"} }
-				}
-			});
-
-			Assert.IsTrue(success);
-
-			var result3 = repository.FindByName<StrainsModel>(recordName);
-
-			Assert.IsTrue(result3.Name == recordName && result3.OtherCollection == "Updated");
 		}
 	}
 }
