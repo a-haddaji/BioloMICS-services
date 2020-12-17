@@ -1,4 +1,5 @@
-﻿using BioloMICS.ClientApi.Model;
+﻿using BioloMICS.ClientApi.Extentions;
+using BioloMICS.ClientApi.Model;
 using RestSharp;
 using RestSharp.Authenticators;
 using RestSharp.Serializers.NewtonsoftJson;
@@ -47,50 +48,52 @@ namespace BioloMICS.ClientApi.Client.Authentication
 				if (_credentials is PasswordCredentials && !expired)
 				{
 					var passwordCredentials = (PasswordCredentials)_credentials;
-					tokenRequest.AddObject(new { 
+					tokenRequest.AddObject(new
+					{
 						client_id = passwordCredentials.ClientId,
 						client_secret = passwordCredentials.ClientSecret,
 						passwordCredentials.UserName,
 						passwordCredentials.Password,
-						grant_type = PasswordCredentialsGrantType });
+						grant_type = PasswordCredentialsGrantType
+					});
 				}
 				else
 				{
-					tokenRequest.AddObject(new { 
+					tokenRequest.AddObject(new
+					{
 						client_id = _credentials.ClientId,
 						client_secret = _credentials.ClientSecret,
-						grant_type = ClientCredentialsGrantType });
+						grant_type = ClientCredentialsGrantType
+					});
 					IsUserAuthenticated = false;
 					CurrentUser = null;
 				}
 
 				var response = tokenClient.Execute<OAuthReponse>(tokenRequest);
+				response.ThrowExceptionOnResponseError();
 
-				if (response.IsSuccessful)
+				_lastAuthenticateDateTime = DateTime.Now;
+				_isAuthenticated = true;
+				_accessToken = response.Data.BearerToken;
+				_refreshToken = response.Data.RefreshToken;
+				ExpiresIn = response.Data.ExpiresIn;
+
+				if (_credentials is PasswordCredentials)
 				{
-					_lastAuthenticateDateTime = DateTime.Now;
-					_isAuthenticated = true;	
-					_accessToken = response.Data.BearerToken;
-					_refreshToken = response.Data.RefreshToken;
-					ExpiresIn = response.Data.ExpiresIn;		
-
-					if (_credentials is PasswordCredentials) 
+					IsUserAuthenticated = true;
+					var token = new JwtSecurityToken(response.Data.BearerToken);
+					CurrentUser = new UserModel
 					{
-						IsUserAuthenticated = true;
-						var token = new JwtSecurityToken(response.Data.BearerToken);
-						CurrentUser = new UserModel
-						{
-							Id = int.Parse(token.Claims.First(x => x.Type == "Id").Value),
-							Name = token.Claims.First(x => x.Type == "Name").Value
-						};
-					}
+						Id = int.Parse(token.Claims.First(x => x.Type == "Id").Value),
+						Name = token.Claims.First(x => x.Type == "Name").Value
+					};
 				}
 			}
 
 			request.AddHeader("Authorization", string.Format("Bearer {0}", _accessToken));
 		}
 
-		public bool Refresh() 
+		public void Refresh()
 		{
 			var tokenRequest = new RestRequest(tokenUri, Method.POST);
 			tokenRequest.AddHeader("content-type", "application/x-www-form-urlencoded");
@@ -107,17 +110,12 @@ namespace BioloMICS.ClientApi.Client.Authentication
 			}
 
 			var response = tokenClient.Execute<OAuthReponse>(tokenRequest);
+			response.ThrowExceptionOnResponseError();
 
-			bool success;
-			if (success = response.IsSuccessful)
-			{
-				_lastAuthenticateDateTime = DateTime.Now;
-				_accessToken = response.Data.BearerToken;
-				_refreshToken = response.Data.RefreshToken;
-				ExpiresIn = response.Data.ExpiresIn;
-			}
-
-			return success;
+			_lastAuthenticateDateTime = DateTime.Now;
+			_accessToken = response.Data.BearerToken;
+			_refreshToken = response.Data.RefreshToken;
+			ExpiresIn = response.Data.ExpiresIn;
 		}
 	}
 }

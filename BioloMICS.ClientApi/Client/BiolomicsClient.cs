@@ -1,4 +1,5 @@
 ﻿using BioloMICS.ClientApi.Client.Authentication;
+using BioloMICS.ClientApi.Extentions;
 using BioloMICS.ClientApi.Model;
 using Newtonsoft.Json.Serialization;
 using RestSharp;
@@ -56,15 +57,16 @@ namespace BioloMICS.ClientApi.Client
 			get { return _authenticator.CurrentUser; }
 		}
 
-		public bool ExtendUserSession() 
+		public void ExtendUserSession() 
 		{
-			return _authenticator.Refresh();
+			_authenticator.Refresh();
 		}
 
 		public IEnumerable<WebSchema> GetSchemas()
 		{
 			var request = new RestRequest("schemas", Method.GET);
 			var response = _client.Execute<IEnumerable<WebSchema>>(request);
+			response.ThrowExceptionOnResponseError();
 			return response.Data;
 		}
 

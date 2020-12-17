@@ -22,6 +22,7 @@ namespace BioloMICS.ClientApi.Client
 			var request = new RestRequest($"data/{GetTableViewName<TEntity>()}/{id}", Method.GET);
 			AppendWebsiteIdHeader(request);
 			var response = _client.Execute<TEntity>(request);
+			response.ThrowExceptionOnResponseError();
 			return response.Data;
 		}
 
@@ -30,6 +31,7 @@ namespace BioloMICS.ClientApi.Client
 			var request = new RestRequest($"search/{GetTableViewName<TEntity>()}/findByName?name={name}", Method.GET);
 			AppendWebsiteIdHeader(request);
 			var response = _client.Execute<TEntity>(request);
+			response.ThrowExceptionOnResponseError();
 			return response.Data;
 		}
 
@@ -39,6 +41,7 @@ namespace BioloMICS.ClientApi.Client
 			var request = new RestRequest($"data/{tableView}/{id}", Method.GET);
 			AppendWebsiteIdHeader(request);
 			var response = _client.Execute<Dictionary<string, object>>(request);
+			response.ThrowExceptionOnResponseError();
 			return response.Data;
 		}
 
@@ -56,10 +59,11 @@ namespace BioloMICS.ClientApi.Client
 				Query = search.Query 
 			});
 			var response = _client.Execute<SearchSummary<TEntity>>(request);
+			response.ThrowExceptionOnResponseError();
 			return response.Data;
 		}
 
-		public bool Create(string tableView, RecordData data)
+		public Record Create(string tableView, RecordData data)
 		{
 			var request = new RestRequest($"data/{tableView}", Method.POST);
 			AppendWebsiteIdHeader(request);
@@ -67,12 +71,12 @@ namespace BioloMICS.ClientApi.Client
 
 			request.AddJsonBody(data);
 
-			var response = _client.Execute(request);
-
-			return response.IsSuccessful;
+			var response = _client.Execute<Record>(request);
+			response.ThrowExceptionOnResponseError();
+			return response.Data;
 		}
 
-		public bool Update(string tableView, Record data)
+		public Record Update(string tableView, Record data)
 		{
 			var request = new RestRequest($"data/{tableView}", Method.PUT);
 			AppendWebsiteIdHeader(request);
@@ -80,9 +84,9 @@ namespace BioloMICS.ClientApi.Client
 
 			request.AddJsonBody(data);
 
-			var response = _client.Execute(request);
-
-			return response.IsSuccessful;
+			var response = _client.Execute<Record>(request);
+			response.ThrowExceptionOnResponseError();
+			return response.Data;
 		}
 
 		private string GetTableViewName<TEntity>()

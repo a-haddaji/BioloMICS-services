@@ -1,4 +1,6 @@
-﻿using BioloMICS.ClientApi.Model;
+﻿using BioloMICS.ClientApi.Client;
+using BioloMICS.ClientApi.Client.Authentication;
+using BioloMICS.ClientApi.Model;
 using BioloMICS.ClientApi.Tests.Model;
 using NUnit.Framework;
 using System;
@@ -9,7 +11,12 @@ namespace BioloMICS.ClientApi.Tests
 	[TestFixture]
 	class DepositTests : ClientTests
 	{
-		//[Test]
+		public override void SetupClient()
+		{
+			Client = new BiolomicsClient(baseUri: "http://localhost:52145/", new PasswordCredentials { ClientId = "xx", ClientSecret = "xx", UserName = "xx", Password = "xx" });
+		}
+
+		[Test]
 		public void CreateAndUpdateTest()
 		{
 			var repository = Client.GetRepository(websiteId: WebsiteId);
@@ -20,7 +27,7 @@ namespace BioloMICS.ClientApi.Tests
 
 			var fieldValue = $"Test - {date}";
 
-			var success = repository.Create(tableView: TableView, new RecordData
+			var response = repository.Create(tableView: TableView, new RecordData
 			{
 				RecordName = recordName,
 				Data = new Dictionary<string, ValueOfFieldBase>()
@@ -29,13 +36,13 @@ namespace BioloMICS.ClientApi.Tests
 				}
 			});
 
-			Assert.IsTrue(success);
+			Assert.IsTrue(response.RecordName == recordName);
 
 			var result = repository.FindByName<StrainsModel>(recordName);
 
 			Assert.IsTrue(result.Name == recordName && result.OtherCollection == fieldValue);
 
-			var success2 = repository.Update(tableView: TableView, new Record
+			var response2 = repository.Update(tableView: TableView, new Record
 			{
 				RecordName = recordName,
 				RecordId = result.Id,
@@ -45,7 +52,7 @@ namespace BioloMICS.ClientApi.Tests
 				}
 			});
 
-			Assert.IsTrue(success);
+			Assert.IsTrue(((ValueOfFieldE)response2.Data["Other culture collection numbers"]).Value == "Updated");
 
 			var result3 = repository.FindByName<StrainsModel>(recordName);
 
