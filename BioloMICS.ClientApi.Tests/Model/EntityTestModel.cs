@@ -10,8 +10,10 @@ namespace BioloMICS.ClientApi.Tests.Model
 	[TableView("WS Mirri")]
 	class StrainsModel : EntityBase
 	{
+		[JsonProperty("Collection accession number")]
+		public string CollectionAccessionNumber { get; set; }
 		[JsonProperty("Other culture collection numbers")]
-		public string OtherCollection { get; set; }
+		public string OtherCultureCollectionNumbers { get; set; }
 
 		[JsonProperty("Organism type")]
 		public OrganismType OrganismType { get; set; }

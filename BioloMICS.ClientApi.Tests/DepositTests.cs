@@ -40,7 +40,7 @@ namespace BioloMICS.ClientApi.Tests
 
 			var result = repository.FindByName<StrainsModel>(recordName);
 
-			Assert.IsTrue(result.Name == recordName && result.OtherCollection == fieldValue);
+			Assert.IsTrue(result.Name == recordName && result.CollectionAccessionNumber == fieldValue);
 
 			var response2 = repository.Update(tableView: TableView, new Record
 			{
@@ -56,7 +56,7 @@ namespace BioloMICS.ClientApi.Tests
 
 			var result3 = repository.FindByName<StrainsModel>(recordName);
 
-			Assert.IsTrue(result3.Name == recordName && result3.OtherCollection == "Updated");
+			Assert.IsTrue(result3.Name == recordName && result3.CollectionAccessionNumber == "Updated");
 		}
 	}
 }
