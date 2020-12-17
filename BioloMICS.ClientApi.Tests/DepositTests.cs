@@ -11,13 +11,14 @@ namespace BioloMICS.ClientApi.Tests
 	[TestFixture]
 	class DepositTests : ClientTests
 	{
+		private int createdRecordId;
 		public override void SetupClient()
 		{
 			Client = new BiolomicsClient(baseUri: "http://localhost:52145/", new PasswordCredentials { ClientId = "xx", ClientSecret = "xx", UserName = "xx", Password = "xx" });
 		}
 
 		[Test]
-		public void CreateAndUpdateTest()
+		public void CreateTest()
 		{
 			var repository = Client.GetRepository(websiteId: WebsiteId);
 
@@ -32,31 +33,43 @@ namespace BioloMICS.ClientApi.Tests
 				RecordName = recordName,
 				Data = new Dictionary<string, ValueOfFieldBase>()
 				{
-					{ "Other culture collection numbers", new ValueOfFieldE { Value = fieldValue} }
+					{ "Collection accession number", new ValueOfFieldE { Value = fieldValue} }
 				}
 			});
+
+			createdRecordId = response.RecordId;
 
 			Assert.IsTrue(response.RecordName == recordName);
 
 			var result = repository.FindByName<StrainsModel>(recordName);
 
 			Assert.IsTrue(result.Name == recordName && result.CollectionAccessionNumber == fieldValue);
+		}
 
-			var response2 = repository.Update(tableView: TableView, new Record
+		[Test]
+		public void UpdateTest()
+		{
+			var repository = Client.GetRepository(websiteId: WebsiteId);
+
+			var date = DateTime.Now;
+
+			var recordName = $"New record - {date}";
+
+			var response = repository.Update(tableView: TableView, new Record
 			{
 				RecordName = recordName,
-				RecordId = result.Id,
+				RecordId = createdRecordId,
 				Data = new Dictionary<string, ValueOfFieldBase>()
 				{
-					{ "Other culture collection numbers", new ValueOfFieldE { Value = "Updated"} }
+					{ "Collection accession number", new ValueOfFieldE { Value = "Updated"} }
 				}
 			});
 
-			Assert.IsTrue(((ValueOfFieldE)response2.Data["Other culture collection numbers"]).Value == "Updated");
+			Assert.IsTrue(((ValueOfFieldE)response.Data["Collection accession number"]).Value == "Updated");
 
-			var result3 = repository.FindByName<StrainsModel>(recordName);
+			var result = repository.FindByName<StrainsModel>(recordName);
 
-			Assert.IsTrue(result3.Name == recordName && result3.CollectionAccessionNumber == "Updated");
+			Assert.IsTrue(result.Name == recordName && result.CollectionAccessionNumber == "Updated");
 		}
 	}
 }
