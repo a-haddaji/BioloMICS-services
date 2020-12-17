@@ -14,7 +14,7 @@ namespace BioloMICS.ClientApi.Tests
 		private int createdRecordId;
 		public override void SetupClient()
 		{
-			Client = new BiolomicsClient(baseUri: "http://localhost:52145/", new PasswordCredentials { ClientId = "xx", ClientSecret = "xx", UserName = "xx", Password = "xx" });
+			Client = new BiolomicsClient(baseUri: "https://localhost:8080", new PasswordCredentials { ClientId = "xx", ClientSecret = "xx", UserName = "xx", Password = "xx" });
 		}
 
 		[Test]
