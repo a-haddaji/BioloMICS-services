@@ -14,7 +14,7 @@ namespace BioloMICS.ClientApi.Tests
 		[OneTimeSetUp]
 		public virtual void SetupClient()
 		{
-			Client = new BiolomicsClient(baseUri: "http://localhost:52145/", new ClientCredentials { ClientId = "xx", ClientSecret = "xx" });
+			Client = new BiolomicsClient(baseUri: "http://localhost:8080/", new ClientCredentials { ClientId = "xx", ClientSecret = "xx" });
 		}
 	}
 }

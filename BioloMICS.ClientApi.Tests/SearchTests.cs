@@ -30,6 +30,16 @@ namespace BioloMICS.ClientApi.Tests
 		}
 
 		[Test]
+		public void GetRecordByNameTest()
+		{
+			var repository = Client.GetRepository(websiteId: WebsiteId);
+
+			var result = repository.FindByName<StrainsModel>(name: "MIRRI 107451");
+
+			Assert.IsTrue(result.Name == "MIRRI 107451");
+		}
+
+		[Test]
 		public void SearchTest()
 		{
 			//Example.
