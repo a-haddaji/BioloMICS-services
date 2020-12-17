@@ -1,5 +1,6 @@
 ﻿using BioloMICS.ClientApi.Client;
 using BioloMICS.ClientApi.Client.Authentication;
+using BioloMICS.ClientApi.Client.Exceptions;
 using BioloMICS.ClientApi.Model;
 using BioloMICS.ClientApi.Tests.Model;
 using NUnit.Framework;
@@ -17,7 +18,7 @@ namespace BioloMICS.ClientApi.Tests
 			Client = new BiolomicsClient(baseUri: "https://localhost:8080", new PasswordCredentials { ClientId = "xx", ClientSecret = "xx", UserName = "xx", Password = "xx" });
 		}
 
-		[Test]
+		[Test, Order(1)]
 		public void CreateTest()
 		{
 			var repository = Client.GetRepository(websiteId: WebsiteId);
@@ -46,7 +47,7 @@ namespace BioloMICS.ClientApi.Tests
 			Assert.IsTrue(result.Name == recordName && result.CollectionAccessionNumber == fieldValue);
 		}
 
-		[Test]
+		[Test, Order(2)]
 		public void UpdateTest()
 		{
 			var repository = Client.GetRepository(websiteId: WebsiteId);
@@ -70,6 +71,25 @@ namespace BioloMICS.ClientApi.Tests
 			var result = repository.FindByName<StrainsModel>(recordName);
 
 			Assert.IsTrue(result.Name == recordName && result.CollectionAccessionNumber == "Updated");
+		}
+
+		[Test]
+		public void DeleteTest()
+		{
+			var notFound = true;
+			var repository = Client.GetRepository(websiteId: WebsiteId);
+			var response = repository.Delete<StrainsModel>(id: createdRecordId);
+
+			try
+			{
+				repository.GetRecordById<StrainsModel>(id: createdRecordId);
+			}
+			catch (HttpResponseException exp)
+			{
+				notFound = exp.StatusCode == System.Net.HttpStatusCode.NotFound;
+			}
+
+			Assert.IsTrue(response && notFound);
 		}
 	}
 }

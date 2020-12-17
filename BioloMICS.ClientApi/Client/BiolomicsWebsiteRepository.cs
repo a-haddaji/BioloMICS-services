@@ -21,18 +21,18 @@ namespace BioloMICS.ClientApi.Client
 		{
 			var request = new RestRequest($"data/{GetTableViewName<TEntity>()}/{id}", Method.GET);
 			AppendWebsiteIdHeader(request);
-			var response = _client.Execute<TEntity>(request);
+			var response = _client.Execute(request);
 			response.ThrowExceptionOnResponseError();
-			return response.Data;
+			return _client.Deserialize<TEntity>(response).Data;
 		}
 
 		public TEntity FindByName<TEntity>(string name) where TEntity : EntityBase
 		{
 			var request = new RestRequest($"search/{GetTableViewName<TEntity>()}/findByName?name={name}", Method.GET);
 			AppendWebsiteIdHeader(request);
-			var response = _client.Execute<TEntity>(request);
+			var response = _client.Execute(request);
 			response.ThrowExceptionOnResponseError();
-			return response.Data;
+			return _client.Deserialize<TEntity>(response).Data;
 		}
 
 
@@ -40,9 +40,9 @@ namespace BioloMICS.ClientApi.Client
 		{
 			var request = new RestRequest($"data/{tableView}/{id}", Method.GET);
 			AppendWebsiteIdHeader(request);
-			var response = _client.Execute<Dictionary<string, object>>(request);
+			var response = _client.Execute(request);
 			response.ThrowExceptionOnResponseError();
-			return response.Data;
+			return _client.Deserialize<Dictionary<string, object>>(response).Data;
 		}
 
 		public SearchSummary<TEntity> Search<TEntity>(Queryable<TEntity> queryable, byte displayStart = 0, byte displayLength = 50) where TEntity : EntityBase
@@ -58,9 +58,9 @@ namespace BioloMICS.ClientApi.Client
 				Expression = search.Expression, 
 				Query = search.Query 
 			});
-			var response = _client.Execute<SearchSummary<TEntity>>(request);
+			var response = _client.Execute(request);
 			response.ThrowExceptionOnResponseError();
-			return response.Data;
+			return _client.Deserialize<SearchSummary<TEntity>>(response).Data;
 		}
 
 		public Record Create(string tableView, RecordData data)
@@ -71,9 +71,9 @@ namespace BioloMICS.ClientApi.Client
 
 			request.AddJsonBody(data);
 
-			var response = _client.Execute<Record>(request);
+			var response = _client.Execute(request);
 			response.ThrowExceptionOnResponseError();
-			return response.Data;
+			return _client.Deserialize<Record>(response).Data;
 		}
 
 		public Record Update(string tableView, Record data)
@@ -84,9 +84,27 @@ namespace BioloMICS.ClientApi.Client
 
 			request.AddJsonBody(data);
 
-			var response = _client.Execute<Record>(request);
+			var response = _client.Execute(request);
 			response.ThrowExceptionOnResponseError();
-			return response.Data;
+			return _client.Deserialize<Record>(response).Data;
+		}
+
+		public bool Delete<TEntity>(int id) where TEntity : EntityBase
+		{
+			var request = new RestRequest($"data/{GetTableViewName<TEntity>()}/{id}", Method.DELETE);
+			AppendWebsiteIdHeader(request);
+			var response = _client.Execute(request);
+			response.ThrowExceptionOnResponseError();
+			return response.IsSuccessful;
+		}
+
+		public bool Delete(string tableView, int id)
+		{
+			var request = new RestRequest($"data/{tableView}/{id}", Method.DELETE);
+			AppendWebsiteIdHeader(request);
+			var response = _client.Execute(request);
+			response.ThrowExceptionOnResponseError();
+			return response.IsSuccessful;
 		}
 
 		private string GetTableViewName<TEntity>()

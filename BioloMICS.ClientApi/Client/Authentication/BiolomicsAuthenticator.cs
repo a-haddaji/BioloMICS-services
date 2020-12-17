@@ -69,19 +69,20 @@ namespace BioloMICS.ClientApi.Client.Authentication
 					CurrentUser = null;
 				}
 
-				var response = tokenClient.Execute<OAuthReponse>(tokenRequest);
+				var response = tokenClient.Execute(tokenRequest);
 				response.ThrowExceptionOnResponseError();
+				var oAuthReponse = tokenClient.Deserialize<OAuthReponse>(response).Data;
 
 				_lastAuthenticateDateTime = DateTime.Now;
 				_isAuthenticated = true;
-				_accessToken = response.Data.BearerToken;
-				_refreshToken = response.Data.RefreshToken;
-				ExpiresIn = response.Data.ExpiresIn;
+				_accessToken = oAuthReponse.BearerToken;
+				_refreshToken = oAuthReponse.RefreshToken;
+				ExpiresIn = oAuthReponse.ExpiresIn;
 
 				if (_credentials is PasswordCredentials)
 				{
 					IsUserAuthenticated = true;
-					var token = new JwtSecurityToken(response.Data.BearerToken);
+					var token = new JwtSecurityToken(oAuthReponse.BearerToken);
 					CurrentUser = new UserModel
 					{
 						Id = int.Parse(token.Claims.First(x => x.Type == "Id").Value),
@@ -109,13 +110,14 @@ namespace BioloMICS.ClientApi.Client.Authentication
 				});
 			}
 
-			var response = tokenClient.Execute<OAuthReponse>(tokenRequest);
+			var response = tokenClient.Execute(tokenRequest);
 			response.ThrowExceptionOnResponseError();
+			var oAuthReponse = tokenClient.Deserialize<OAuthReponse>(response).Data;
 
 			_lastAuthenticateDateTime = DateTime.Now;
-			_accessToken = response.Data.BearerToken;
-			_refreshToken = response.Data.RefreshToken;
-			ExpiresIn = response.Data.ExpiresIn;
+			_accessToken = oAuthReponse.BearerToken;
+			_refreshToken = oAuthReponse.RefreshToken;
+			ExpiresIn = oAuthReponse.ExpiresIn;
 		}
 	}
 }

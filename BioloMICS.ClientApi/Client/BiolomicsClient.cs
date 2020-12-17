@@ -65,9 +65,9 @@ namespace BioloMICS.ClientApi.Client
 		public IEnumerable<WebSchema> GetSchemas()
 		{
 			var request = new RestRequest("schemas", Method.GET);
-			var response = _client.Execute<IEnumerable<WebSchema>>(request);
+			var response = _client.Execute(request);
 			response.ThrowExceptionOnResponseError();
-			return response.Data;
+			return _client.Deserialize<IEnumerable<WebSchema>>(response).Data;
 		}
 
 		public BiolomicsWebsiteRepository GetRepository(int websiteId) 
