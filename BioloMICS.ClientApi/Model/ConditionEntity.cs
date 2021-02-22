@@ -7,10 +7,10 @@ namespace BioloMICS.ClientApi.Model
 	{
 		#region Properties
 		/// <summary>
-		/// The unique key of the field being used as a criteria in a condition.
+		/// The field name being used as a criteria in a condition.
 		/// </summary>
 		[Required]
-		public long FieldKey { get; set; }
+		public string FieldName { get; set; }
 		
 		/// <summary>
 		/// The index of the critera, this is mandatory to be able to refer to conditions in the expression part.

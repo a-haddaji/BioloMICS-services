@@ -7,11 +7,12 @@ using System.Text;
 
 namespace BioloMICS.ClientApi.Tests.Model
 {
-	[TableView("WS Mirri")]
+	[TableView("WS Strains")]
 	class StrainsModel : EntityBase
 	{
 		[JsonProperty("Collection accession number")]
 		public string CollectionAccessionNumber { get; set; }
+
 		[JsonProperty("Other culture collection numbers")]
 		public string OtherCultureCollectionNumbers { get; set; }
 
@@ -20,6 +21,7 @@ namespace BioloMICS.ClientApi.Tests.Model
 
 		[JsonProperty("Taxon name")]
 		public List<TaxonName> TaxonName { get; set; }
+
 	}
 
 	class OrganismType

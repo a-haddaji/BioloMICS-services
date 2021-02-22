@@ -15,7 +15,7 @@ namespace BioloMICS.ClientApi.Tests
 		private int createdRecordId;
 		public override void SetupClient()
 		{
-			Client = new BiolomicsClient(baseUri: "https://localhost:8080", new PasswordCredentials { ClientId = "xx", ClientSecret = "xx", UserName = "xx", Password = "xx" });
+			Client = new BiolomicsClient(baseUri: "http://localhost/", new PasswordCredentials { ClientId = "xx", ClientSecret = "xx", UserName = "Put your email here", Password = "Put your password here" });
 		}
 
 		[Test, Order(1)]
@@ -56,13 +56,27 @@ namespace BioloMICS.ClientApi.Tests
 
 			var recordName = $"New record - {date}";
 
+			var subCfields = new List<NameValueEntity>();
+			subCfields.Add(new NameValueEntity { Name = "Algae", Value = "no" });
+			subCfields.Add(new NameValueEntity { Name = "Bacteria", Value = "yes" });
+			subCfields.Add(new NameValueEntity { Name = "Filamentous Fungi", Value = "no" });
+
+			var targetRecord = repository.FindRecordByName("WS Bibliography", name: "A list of the entomogenous fungi of Great Britain");
+			var recordId = (long)targetRecord["Record Id"];
+
+			var targets = new List<RecordValueEntity>();
+			targets.Add(new RecordValueEntity { Name = new ValueOfFieldE { Value = " Target record name" }, RecordId = (int)recordId });
+			//targets.Add(new RecordValueEntity { Name = new ValueOfFieldE { Value = " Target record name" }, RecordId = 0 });
+
 			var response = repository.Update(tableView: TableView, new Record
 			{
 				RecordName = recordName,
 				RecordId = createdRecordId,
 				Data = new Dictionary<string, ValueOfFieldBase>()
 				{
-					{ "Collection accession number", new ValueOfFieldE { Value = "Updated"} }
+					{ "Collection accession number", new ValueOfFieldE { Value = "Updated"} },
+					{ "Organism type", new ValueOfFieldC { Value = subCfields} },
+					{ "Literature", new ValueOfFieldRLink { Value = targets }}
 				}
 			});
 

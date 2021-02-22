@@ -35,6 +35,15 @@ namespace BioloMICS.ClientApi.Client
 			return _client.Deserialize<TEntity>(response).Data;
 		}
 
+		public Dictionary<string, object> FindRecordByName(string tableView, string name)
+		{
+			var request = new RestRequest($"search/{tableView}/findByName?name={name}", Method.GET);
+			AppendWebsiteIdHeader(request);
+			var response = _client.Execute(request);
+			response.ThrowExceptionOnResponseError();
+			return _client.Deserialize<Dictionary<string, object>>(response).Data;
+		}
+
 
 		public Dictionary<string, object> GetRecordById(string tableView, int id)
 		{

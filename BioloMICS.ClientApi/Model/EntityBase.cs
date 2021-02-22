@@ -1,23 +1,22 @@
 ﻿using BioloMICS.ClientApi.Attributes;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BioloMICS.ClientApi.Model
 {
 	public abstract class EntityBase
 	{
-		[FieldKey((long)FieldTypeEnum.RecordId)]
+		[JsonProperty("Record Id")]
 		public int Id { get; set; }
-		[FieldKey((long)FieldTypeEnum.RecordName)]
+		[JsonProperty("Accession number")]
 		public string Name { get; set; }
-		[FieldKey((long)FieldTypeEnum.Owner)]
+		[JsonProperty("Creator user name")]
 		public string OwnerEmail { get; set; }
-		[FieldKey((long)FieldTypeEnum.CreationDate)]
+		[JsonProperty("Creation date")]
 		public DateTime CreationDate { get; set; }
-		[FieldKey((long)FieldTypeEnum.LastChangeDate)]
+		[JsonProperty("Last change date")]
 		public DateTime LastChangeDate { get; set; }
-		[FieldKey((long)FieldTypeEnum.LastChangeUser)]
+		[JsonProperty("Last change user name")]
 		public string LastChangeUserEmail { get; set; }
 	}
 }

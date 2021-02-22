@@ -2,7 +2,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Linq;
-using BioloMICS.ClientApi.Attributes;
+using Newtonsoft.Json;
 
 namespace BioloMICS.ClientApi.Extentions
 {
@@ -12,54 +12,54 @@ namespace BioloMICS.ClientApi.Extentions
 		public static Queryable<ModelType> Not<PropertyType>(Expression<Func<ModelType, PropertyType>> selector, QueryOperationEnum operation, PropertyType value)
 		{
 			var search = new SearchQuery() { Expression = "Not Q0" };
-			AppendCondition(search, GetFieldKey(selector), operation, value);
+			AppendCondition(search, GetFieldName(selector), operation, value);
 			return new Queryable<ModelType>(search);
 		}
 
 		public static Queryable<ModelType> For<PropertyType>(Expression<Func<ModelType, PropertyType>> selector, QueryOperationEnum operation, PropertyType value)
 		{
 			var search = new SearchQuery() { Expression = "Q0" };
-			AppendCondition(search, GetFieldKey(selector), operation, value.ToString());
+			AppendCondition(search, GetFieldName(selector), operation, value.ToString());
 			return new Queryable<ModelType>(search);
 		}
 
 
 		public Queryable<ModelType> And<PropertyType>(Expression<Func<ModelType, PropertyType>> selector, QueryOperationEnum operation, PropertyType value)
 		{
-			AppendCondition(GetFieldKey(selector), operation, value.ToString());
+			AppendCondition(GetFieldName(selector), operation, value.ToString());
 			AppendLogicOperation("And");
 			return this;
 		}
 
 		public Queryable<ModelType> Or<PropertyType>(Expression<Func<ModelType, PropertyType>> selector, QueryOperationEnum operation, PropertyType value)
 		{
-			AppendCondition(GetFieldKey(selector), operation, value);
+			AppendCondition(GetFieldName(selector), operation, value);
 			AppendLogicOperation("Or");
 			return this;
 		}
 
 		public Queryable<ModelType> AndNot<PropertyType>(Expression<Func<ModelType, PropertyType>> selector, QueryOperationEnum operation, PropertyType value)
 		{
-			AppendCondition(GetFieldKey(selector), operation, value);
+			AppendCondition(GetFieldName(selector), operation, value);
 			AppendLogicOperation("AndNot");
 			return this;
 		}
 
 		public Queryable<ModelType> OrNot<PropertyType>(Expression<Func<ModelType, PropertyType>> selector, QueryOperationEnum operation, PropertyType value)
 		{
-			AppendCondition(GetFieldKey(selector), operation, value);
+			AppendCondition(GetFieldName(selector), operation, value);
 			AppendLogicOperation("OrNot");
 			return this;
 		}
 
-		private void AppendCondition<PropertyType>(long fieldKey, QueryOperationEnum operation, PropertyType value)
+		private void AppendCondition<PropertyType>(string fieldName, QueryOperationEnum operation, PropertyType value)
 		{
-			_searchModel.Query.Add(new ConditionEntity { Index = _searchModel.Query.Count, FieldKey = fieldKey, Operation = operation, Value = value.ToString() });
+			_searchModel.Query.Add(new ConditionEntity { Index = _searchModel.Query.Count, FieldName = fieldName, Operation = operation, Value = value.ToString() });
 		}
 
-		private static void AppendCondition<PropertyType>(SearchQuery searchModel , long fieldKey, QueryOperationEnum operation, PropertyType value)
+		private static void AppendCondition<PropertyType>(SearchQuery searchModel , string fieldName, QueryOperationEnum operation, PropertyType value)
 		{
-			searchModel.Query.Add(new ConditionEntity { Index = searchModel.Query.Count, FieldKey = fieldKey, Operation = operation, Value = value.ToString() });
+			searchModel.Query.Add(new ConditionEntity { Index = searchModel.Query.Count, FieldName = fieldName, Operation = operation, Value = value.ToString() });
 		}
 
 		private void AppendLogicOperation(string operation)
@@ -72,16 +72,16 @@ namespace BioloMICS.ClientApi.Extentions
 			return _searchModel;
 		}
 
-		private static long GetFieldKey<PropertyType>(Expression<Func<ModelType, PropertyType>> selector)
+		private static string GetFieldName<PropertyType>(Expression<Func<ModelType, PropertyType>> selector)
 		{
 			var expression = (MemberExpression)selector.Body;
-			var keyAttribute = Attribute.GetCustomAttribute(expression.Member, typeof(FieldKeyAttribute)) as FieldKeyAttribute;
-			if (keyAttribute == null)
+			var jAttribute = Attribute.GetCustomAttribute(expression.Member, typeof(JsonPropertyAttribute)) as JsonPropertyAttribute;
+			if (jAttribute == null)
 			{
-				throw new ArgumentException($"FieldKey annotation is missing on property {expression.Member.Name}.");
+				return expression.Member.Name;
 			}
 
-			return keyAttribute.Key;
+			return jAttribute.PropertyName;
 		}
 
 		private Queryable()
